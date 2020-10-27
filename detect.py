@@ -27,7 +27,7 @@ class Detect:
         But it can capture non-url as url e.g olusola.og, sholay.pb etc
         i.e The pattern is base on 1 or more dot(.)
         """
-        return None if (url := re.findall(r'(?:http://)?\w+\.\S*', self.text)) == [] else url
+        return None if (url := re.findall(r'(?:http://)?\w+\.\S+[^.\s]', self.text)) == [] else url
 
     @property
     def number(self) -> list:
@@ -52,7 +52,7 @@ class Detect:
         Checking for hashtags in a text e.g
         #sholay, #comsavvy, #endsars etc.
         """
-        return None if (exp := re.findall(r'[^A-Za-z](#[\w]*)', self.text)) == [] else exp
+        return None if (exp := re.findall(r'(?<!\w)(?:#[\w]+)', self.text)) == [] else exp
 
 
 if __name__ == "__main__":
@@ -68,5 +68,6 @@ if __name__ == "__main__":
                  "facebook.com"
                  " www.facebook.com"
                  " university of ilorin .org")
-    a = Detect(long_url).url
-    print(a)
+    a = Detect(long_url)
+    print(a.url)
+    print(a.hashtags)
